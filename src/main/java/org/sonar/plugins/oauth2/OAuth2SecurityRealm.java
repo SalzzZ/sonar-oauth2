@@ -1,5 +1,6 @@
 /*
  * Copyright 2015, Joseph "Deven" Phillips
+ * Copyright 2015, Alexandre Lewandowski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +23,11 @@ import org.sonar.api.security.SecurityRealm;
 /**
  *
  * @author <a href="">Deven Phillips</a>
+ * @author <a href="https://github.com/alexlew">Alexandre Lewandowski</a>
  */
 public class OAuth2SecurityRealm extends SecurityRealm {
     
-    private static final String KEY = "oauth2";
+    public static final String KEY = "oauth2";
 
     @Override
     public Authenticator doGetAuthenticator() {
