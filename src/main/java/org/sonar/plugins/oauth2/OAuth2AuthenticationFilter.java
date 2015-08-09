@@ -61,7 +61,7 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
       try {
         OAuthClientRequest req = client.getClientRequest();
         ((HttpServletResponse) response).sendRedirect(req.getLocationUri());
-      } catch (OAuthSystemException ex) {
+      } catch (OAuth2PluginException ex) {
         LOG.error("Error creating OAuthClientRequest", ex);
       }
     } else {
