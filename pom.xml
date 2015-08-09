@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
     <version>19</version>
   </parent>
-    
+
   <artifactId>sonar-oauth2</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-    
+  <packaging>sonar-plugin</packaging>
+
   <name>SonarQube OAuth2 Plugin</name>
-  <description>An authentication provider plugin for SonarQube which allows for integration with OAuth2 providers (i.e. Google/Facebook/GitHub)</description>
-  <url>https://github.com/InfoSec812/sonar-oauth2</url>
-    
+  <description>An authentication provider plugin for SonarQube which allows for integration with OAuth2 providers
+    (i.e. Google/Facebook/GitHub)
+  </description>
+  <url>https://github.com/alexlew/sonar-oauth2</url>
+
   <inceptionYear>2015</inceptionYear>
   <organization>
     <name>SonarSource</name>
@@ -27,19 +32,24 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-    
+
   <developers>
     <developer>
       <name>Deven Phillips</name>
       <id>InfoSec812</id>
       <timezone>GMT-5</timezone>
     </developer>
+    <developer>
+      <name>Alexandre Lewandowski</name>
+      <id>alexlew</id>
+      <timezone>GMT+1</timezone>
+    </developer>
   </developers>
-    
+
   <scm>
-    <connection>scm:git:https://github.com/InfoSec812/sonar-oauth2</connection>
-    <developerConnection>scm:git:https://github.com/InfoSec812/sonar-oauth2</developerConnection>
-    <url>scm:git:https://github.com/InfoSec812/sonar-oauth2</url>
+    <connection>scm:git:https://github.com/alexlew/sonar-oauth2</connection>
+    <developerConnection>scm:git:https://github.com/alexlew/sonar-oauth2</developerConnection>
+    <url>scm:git:https://github.com/alexlew/sonar-oauth2</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
@@ -50,26 +60,41 @@
     <system>Cloudbees</system>
     <url>https://sonarplugins.ci.cloudbees.com/job/oauth2</url>
   </ciManagement>
+
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <pluginName>OAuth2</pluginName>
+          <pluginClass>org.sonar.plugins.oauth2.OAuth2Plugin</pluginClass>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <header>org/sonar/plugins/licenseheaders/Apache2-alexlew.txt</header>
+          <validHeaders>
+            <validHeader>org/sonar/plugins/licenseheaders/Apache2-DevenPhillips.txt</validHeader>
+            <validHeader>org/sonar/plugins/licenseheaders/Apache2.txt</validHeader>
+            <validHeader>org/sonar/plugins/licenseheaders/SonarSource.txt</validHeader>
+          </validHeaders>
         </configuration>
       </plugin>
     </plugins>
   </build>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.version>5.0.1</sonar.version>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <sonar.version>5.1</sonar.version>
     <oltu.version>1.0.0</oltu.version>
     <license.mailto>dev@sonar.codehaus.org</license.mailto>
     <license.name>Apache2</license.name>
-    <license.owner>Deven Phillips</license.owner>
+    <license.owner>Alexandre Lewandowski</license.owner>
     <license.title>SonarQube OAuth2 Plugin</license.title>
     <license.year>2015</license.year>
   </properties>
@@ -98,7 +123,7 @@
       <artifactId>org.apache.oltu.oauth2.client</artifactId>
       <version>${oltu.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -129,15 +154,4 @@
       <version>1.16.2</version>
     </dependency>
   </dependencies>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <configLocation>config/sun_checks.xml</configLocation>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>
