@@ -19,8 +19,17 @@ import org.apache.oltu.oauth2.common.OAuthProviderType;
 
 public enum Providers {
 
+  FACEBOOK(new GenericProvider(OAuthProviderType.FACEBOOK)),
+  FOURSQUARE(new GenericProvider(OAuthProviderType.FOURSQUARE)),
+  GITHUB(new GenericProvider(OAuthProviderType.GITHUB)),
   GOOGLE(new GoogleProvider()),
-  GITHUB(new GenericProvider(OAuthProviderType.GITHUB));
+  INSTAGRAM(new GenericProvider(OAuthProviderType.INSTAGRAM)),
+  LINKEDIN(new GenericProvider(OAuthProviderType.LINKEDIN)),
+  MICROSOFT(new GenericProvider(OAuthProviderType.MICROSOFT)),
+  PAYPAL(new GenericProvider(OAuthProviderType.PAYPAL)),
+  REDDIT(new GenericProvider(OAuthProviderType.REDDIT)),
+  SALESFORCE(new GenericProvider(OAuthProviderType.SALESFORCE)),
+  YAMMER(new GenericProvider(OAuthProviderType.YAMMER));
 
   private OAuth2Provider provider;
 
