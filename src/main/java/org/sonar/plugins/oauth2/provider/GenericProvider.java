@@ -50,6 +50,7 @@ public class GenericProvider implements OAuth2Provider {
     final String callback = baseUrl + (baseUrl.endsWith("/") ? "" : "/") + OAuth2Client.PROPERTY_CALLBACK_URI;
     return OAuthClientRequest.authorizationLocation(getAuthzEndpoint())
             .setClientId(settings.getString(OAuth2Client.PROPERTY_CLIENT_ID))
-            .setRedirectURI(callback);
+            .setRedirectURI(callback)
+            .setParameter("scope", "email");
   }
 }

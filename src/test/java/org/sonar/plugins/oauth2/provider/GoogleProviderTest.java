@@ -43,6 +43,7 @@ public class GoogleProviderTest {
     assertThat(request.getLocationUri()).contains("client_id=myClientId");
     assertThat(request.getLocationUri()).contains("redirect_uri=http%3A%2F%2Fsonar%3A9111%2Fweb-context%2Foauth2%2Fcallback");
     assertThat(request.getLocationUri()).contains("response_type=code");
+    assertThat(request.getLocationUri()).contains("scope=email");
   }
 
 
