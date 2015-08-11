@@ -26,10 +26,12 @@ import org.sonar.api.config.Settings;
 import org.sonar.api.ServerExtension;
 import org.sonar.api.security.UserDetails;
 import org.sonar.plugins.oauth2.provider.GoogleProvider;
+import org.sonar.plugins.oauth2.provider.OAuth2Provider;
+import org.sonar.plugins.oauth2.provider.Providers;
 
 /**
- *
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
+ * @author <a href="https://github.com/alexlew">Alexandre Lewandowski</a>
  */
 public class OAuth2Client implements ServerExtension {
     
@@ -59,14 +61,22 @@ public class OAuth2Client implements ServerExtension {
   /**
    * Create an instance of {@link OAuthClientRequest} which uses the {@link Settings}
    * from Sonar to determine the auth location, redirect URL, and client ID.
+   *
    * @return An instance of {@link OAuthClientRequest} ready to be used to send messages.
    * @throws OAuthSystemException If there is insufficient or conflicting configurations.
+   * @param providerName name of the provider to use.
    */
-  public OAuthClientRequest getClientRequest() throws OAuth2PluginException {
+  public OAuthClientRequest getRedirectRequest(String providerName) throws OAuth2PluginException {
+    String name = "";
     try {
-      AuthenticationRequestBuilder redirReqBuilder =
-              new GoogleProvider().createRedirectRequestBuilder(this.settings);
-      return redirReqBuilder.buildQueryMessage();
+      if(providerName == null) {
+        throw new OAuth2PluginException("Provider 'NULL' is not supported");
+      }
+      name = providerName.toUpperCase().trim();
+      OAuth2Provider provider = Providers.valueOf(name).get();
+      return provider.createRedirectRequestBuilder(this.settings).buildQueryMessage();
+    } catch (IllegalArgumentException e) {
+      throw new OAuth2PluginException("Provider '" + name + "' is not supported");
     } catch (OAuthSystemException e) {
       throw new OAuth2PluginException("Cannot build redirect request.", e);
     }
