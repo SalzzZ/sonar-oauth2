@@ -22,51 +22,59 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.sonar.api.security.UserDetails;
 import org.sonar.api.web.ServletFilter;
 
 /**
- *
  * @author <a href="">Deven Phillips</a>
  */
+@Slf4j
 public class OAuth2ValidationFilter extends ServletFilter {
-    
-    public final static String OAUTH2_CODE = "sonar.oauth2.code";
-    
-    final private OAuth2Client client;
 
-    public OAuth2ValidationFilter(OAuth2Client client) {
-        this.client = client;
-    }
+  public final static String OAUTH2_CODE = "sonar.oauth2.code";
+  protected static String UNAUTHORIZED_URI = "/sessions/login";
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
+  final private OAuth2Client client;
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        UserDetails user = (UserDetails)((HttpServletRequest) request).getSession().getAttribute(OAuth2AuthenticationFilter.USER_ATTRIBUTE);
-        String code = (String)((HttpServletRequest) request).getSession().getAttribute(OAUTH2_CODE);
-        try {
-          OAuthClientRequest clientReq = client.getTokenClientRequest(user, code);
-          OAuthClient client = new OAuthClient(new URLConnectionClient());
-          OAuthJSONAccessTokenResponse tokenResponse = client.accessToken(clientReq);
-          ((HttpServletRequest) request).getSession().setAttribute("tokenJson", tokenResponse);
-        } catch (OAuthSystemException oase) {
-          chain.doFilter(request, response);
-        } catch (OAuthProblemException oape) {
-          chain.doFilter(request, response);
-        }
-    }
+  public OAuth2ValidationFilter(OAuth2Client client) {
+    this.client = client;
+  }
 
-    @Override
-    public void destroy() {
+  @Override
+  public void init(FilterConfig filterConfig) throws ServletException {
+  }
+
+  @Override
+  public UrlPattern doGetPattern() {
+    return UrlPattern.create("/oauth2/callback*");
+  }
+
+  @Override
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    try {
+      LOG.info("Enter Validation Filter.");
+      UserDetails user = (UserDetails) ((HttpServletRequest) request).getSession().getAttribute(OAuth2AuthenticationFilter.USER_ATTRIBUTE);
+      String code = (String) ((HttpServletRequest) request).getSession().getAttribute(OAUTH2_CODE);
+      OAuthClientRequest clientReq = client.getTokenClientRequest(user, code);
+      OAuthClient client = new OAuthClient(new URLConnectionClient());
+      OAuthJSONAccessTokenResponse tokenResponse = client.accessToken(clientReq);
+      LOG.info("Token expires in {}.", tokenResponse.getExpiresIn());
+      ((HttpServletRequest) request).getSession().setAttribute("tokenJson", tokenResponse);
+      chain.doFilter(request, response);
+    } catch (Exception e) {
+      ((HttpServletResponse)response).sendRedirect(UNAUTHORIZED_URI);
     }
+  }
+
+  @Override
+  public void destroy() {
+  }
 
 }
