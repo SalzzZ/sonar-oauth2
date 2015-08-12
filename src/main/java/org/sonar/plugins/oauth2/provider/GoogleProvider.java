@@ -21,6 +21,8 @@ import org.sonar.api.config.Settings;
 
 public class GoogleProvider extends GenericProvider {
 
+  public static String SCOPE =  "https://www.googleapis.com/auth/userinfo.profile";
+
   public GoogleProvider() {
     super(OAuthProviderType.GOOGLE);
   }
@@ -30,6 +32,7 @@ public class GoogleProvider extends GenericProvider {
     OAuthClientRequest.AuthenticationRequestBuilder redirectRequestBuilder;
     redirectRequestBuilder = super.createRedirectRequestBuilder(settings);
     redirectRequestBuilder.setParameter("response_type", "code");
+    redirectRequestBuilder.setParameter("scope", SCOPE);
     return redirectRequestBuilder;
   }
 

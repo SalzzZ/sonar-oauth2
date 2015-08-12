@@ -16,6 +16,10 @@
 package org.sonar.plugins.oauth2;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -28,8 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.OAuthAuthzResponse;
 import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
-import org.sonar.api.security.UserDetails;
 import org.sonar.api.web.ServletFilter;
 
 /**
@@ -59,16 +63,22 @@ public class OAuth2ValidationFilter extends ServletFilter {
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     try {
+      HttpServletRequest httpRequest = (HttpServletRequest) request;
       LOG.info("Enter Validation Filter.");
-      UserDetails user = (UserDetails) ((HttpServletRequest) request).getSession().getAttribute(OAuth2AuthenticationFilter.USER_ATTRIBUTE);
-      String code = (String) ((HttpServletRequest) request).getSession().getAttribute(OAUTH2_CODE);
-      OAuthClientRequest clientReq = client.getTokenClientRequest(user, code);
+      OAuthAuthzResponse oar = OAuthAuthzResponse.oauthCodeAuthzResponse(httpRequest);
+      String code = oar.getCode();
+      OAuthClientRequest clientReq = client.getTokenRequest(code);
       OAuthClient client = new OAuthClient(new URLConnectionClient());
       OAuthJSONAccessTokenResponse tokenResponse = client.accessToken(clientReq);
-      LOG.info("Token expires in {}.", tokenResponse.getExpiresIn());
-      ((HttpServletRequest) request).getSession().setAttribute("tokenJson", tokenResponse);
+      String accessToken = tokenResponse.getAccessToken();
+      LOG.info("Token {} expires in {}.", accessToken, tokenResponse.getExpiresIn());
+      URL url = new URL("https://www.googleapis.com/oauth2/v1/userinfo");
+      URLConnection urlConnection = url.openConnection();
+      urlConnection.setRequestProperty("access_token", accessToken);
+      LOG.info((String)urlConnection.getContent());
       chain.doFilter(request, response);
     } catch (Exception e) {
+      LOG.error("Cannot check identity.", e);
       ((HttpServletResponse)response).sendRedirect(UNAUTHORIZED_URI);
     }
   }

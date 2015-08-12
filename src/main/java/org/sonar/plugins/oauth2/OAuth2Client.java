@@ -82,14 +82,13 @@ public class OAuth2Client implements ServerExtension {
     }
   }
   
-  public OAuthClientRequest getTokenClientRequest(UserDetails user, String code) throws OAuthSystemException {
-    OAuthClientRequest request = OAuthClientRequest
-                                                    .tokenLocation(tokenLocation)
-                                                    .setGrantType(GrantType.PASSWORD)
+  public OAuthClientRequest getTokenRequest(String code) throws OAuthSystemException {
+    return OAuthClientRequest
+            .tokenProvider(OAuthProviderType.GOOGLE)
+            .setGrantType(GrantType.AUTHORIZATION_CODE)
             .setClientId(settings.getString(PROPERTY_CLIENT_ID))
             .setRedirectURI(settings.getString(PROPERTY_SONAR_URL) + "/oauth2/callback")
             .setCode(code)
-                                                    .buildQueryMessage();
-      return request;
+            .buildQueryMessage();
   }
 }

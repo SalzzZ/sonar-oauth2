@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.sonar.api.security.UserDetails;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -46,13 +47,25 @@ public class OAuth2ValidationFilterTest {
   }
 
   @Test
-  public void filter_should_redirect_ifUNAUTHORIZE_URI_something_wrong_append() throws Exception {
+  public void filter_should_redirect_if_something_wrong_append() throws Exception {
     OAuth2ValidationFilter filter = new OAuth2ValidationFilter(client);
     when(request.getSession()).thenThrow(new NullPointerException());
 
     filter.doFilter(request, response, chain);
 
     verify(response).sendRedirect(OAuth2ValidationFilter.UNAUTHORIZED_URI);
+  }
+
+  @Test
+  public void filter_should_add_user_in_request_parameter() throws Exception {
+    OAuth2ValidationFilter filter = new OAuth2ValidationFilter(client);
+    when(request.getSession()).thenThrow(new NullPointerException());
+
+    filter.doFilter(request, response, chain);
+
+    verify(response).sendRedirect(OAuth2ValidationFilter.UNAUTHORIZED_URI);
+    verify(request).setAttribute(eq(OAuth2AuthenticationFilter.USER_ATTRIBUTE), any(UserDetails.class));
+    verify(chain).doFilter(request, response);
   }
 
 }

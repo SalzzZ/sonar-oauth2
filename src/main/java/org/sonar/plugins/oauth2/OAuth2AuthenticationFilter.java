@@ -24,26 +24,25 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.sonar.api.web.ServletFilter;
 
 /**
- *
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
  */
 @Slf4j
 public class OAuth2AuthenticationFilter extends ServletFilter {
 
   public static final String USER_ATTRIBUTE = "sonar.oauth.user";
-  
+
   final private OAuth2Client client;
 
   public OAuth2AuthenticationFilter(OAuth2Client client) {
     this.client = client;
   }
-  
+
   @Override
   public UrlPattern doGetPattern() {
     return UrlPattern.create("/sessions/new");
@@ -51,15 +50,15 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-      
+
   }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     HttpSession session = ((HttpServletRequest) request).getSession(true);
-    if (session.getAttribute(USER_ATTRIBUTE)==null) {   // TODO: Check session state for an existing OAuth code/refresh token
+    if (session.getAttribute(USER_ATTRIBUTE) == null) {   // TODO: Check session state for an existing OAuth code/refresh token
       try {
-        OAuthClientRequest req = client.getClientRequest();
+        OAuthClientRequest req = client.getRedirectRequest("google");
         ((HttpServletResponse) response).sendRedirect(req.getLocationUri());
       } catch (OAuth2PluginException ex) {
         LOG.error("Error creating OAuthClientRequest", ex);
