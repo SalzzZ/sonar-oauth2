@@ -53,5 +53,18 @@ public class GenericProviderTest {
     assertThat(request.getLocationUri()).contains("scope=email");
   }
 
+  @Test
+  public void buildTokenRequest_given_a_provider_and_valid_Settings() throws Exception {
+    OAuth2Provider provider = new GenericProvider(OAuthProviderType.GITHUB);
+    Settings settings = new Settings()
+            .setProperty(OAuth2Client.PROPERTY_PROVIDER, "github")
+            .setProperty(OAuth2Client.PROPERTY_CLIENT_ID, "myClientId")
+            .setProperty(OAuth2Client.PROPERTY_SONAR_URL, "http://sonar:9111/web-context");
+
+    OAuthClientRequest request = provider.createTokenRequestBuilder(settings).buildQueryMessage();
+    assertThat(request.getLocationUri()).startsWith(OAuthProviderType.GITHUB.getTokenEndpoint());
+    assertThat(request.getLocationUri()).contains("grant_type=password");
+  }
+
 
 }

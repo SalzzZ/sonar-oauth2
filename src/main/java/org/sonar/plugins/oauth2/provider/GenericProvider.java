@@ -17,9 +17,9 @@ package org.sonar.plugins.oauth2.provider;
 
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.apache.oltu.oauth2.common.OAuthProviderType;
+import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.sonar.api.config.Settings;
 import org.sonar.plugins.oauth2.OAuth2Client;
-import org.sonar.plugins.oauth2.OAuth2PluginException;
 
 public class GenericProvider implements OAuth2Provider {
 
@@ -52,5 +52,11 @@ public class GenericProvider implements OAuth2Provider {
             .setClientId(settings.getString(OAuth2Client.PROPERTY_CLIENT_ID))
             .setRedirectURI(callback)
             .setParameter("scope", "email");
+  }
+
+  @Override
+  public OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings) {
+    return OAuthClientRequest.tokenLocation(getTokenEndpoint())
+            .setGrantType(GrantType.PASSWORD);
   }
 }

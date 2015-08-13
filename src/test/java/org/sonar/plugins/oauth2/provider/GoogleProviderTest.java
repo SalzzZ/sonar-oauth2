@@ -43,7 +43,19 @@ public class GoogleProviderTest {
     assertThat(request.getLocationUri()).contains("client_id=myClientId");
     assertThat(request.getLocationUri()).contains("redirect_uri=http%3A%2F%2Fsonar%3A9111%2Fweb-context%2Foauth2%2Fcallback");
     assertThat(request.getLocationUri()).contains("response_type=code");
-    assertThat(request.getLocationUri()).contains("scope=email");
+    assertThat(request.getLocationUri()).contains("scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile");
+  }
+
+  @Test
+  public void buildTokenRequest_google_add_specific_parameters() throws Exception {
+    OAuth2Provider provider = new GoogleProvider();
+    Settings settings = new Settings()
+            .setProperty(OAuth2Client.PROPERTY_PROVIDER, "Google")
+            .setProperty(OAuth2Client.PROPERTY_CLIENT_ID, "myClientId");
+
+    OAuthClientRequest request = provider.createTokenRequestBuilder(settings).buildQueryMessage();
+    assertThat(request.getLocationUri()).startsWith(OAuthProviderType.GOOGLE.getTokenEndpoint());
+    assertThat(request.getLocationUri()).contains("grant_type=password");
   }
 
 

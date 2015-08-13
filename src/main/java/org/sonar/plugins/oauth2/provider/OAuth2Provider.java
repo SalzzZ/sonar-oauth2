@@ -17,7 +17,6 @@ package org.sonar.plugins.oauth2.provider;
 
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.sonar.api.config.Settings;
-import org.sonar.plugins.oauth2.OAuth2PluginException;
 
 public interface OAuth2Provider {
 
@@ -28,5 +27,7 @@ public interface OAuth2Provider {
   String getTokenEndpoint();
 
   OAuthClientRequest.AuthenticationRequestBuilder createRedirectRequestBuilder(Settings settings);
+
+  OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings);
 
 }
