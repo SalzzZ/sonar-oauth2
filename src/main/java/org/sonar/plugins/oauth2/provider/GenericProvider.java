@@ -55,8 +55,11 @@ public class GenericProvider implements OAuth2Provider {
   }
 
   @Override
-  public OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings) {
+  public OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings, String code) {
     return OAuthClientRequest.tokenLocation(getTokenEndpoint())
-            .setGrantType(GrantType.PASSWORD);
+            .setClientId(settings.getString(OAuth2Client.PROPERTY_CLIENT_ID))
+            .setClientSecret(settings.getString(OAuth2Client.PROPERTY_SECRET))
+            .setCode(code)
+            .setGrantType(GrantType.AUTHORIZATION_CODE);
   }
 }

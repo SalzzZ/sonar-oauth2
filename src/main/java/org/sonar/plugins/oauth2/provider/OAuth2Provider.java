@@ -28,6 +28,6 @@ public interface OAuth2Provider {
 
   OAuthClientRequest.AuthenticationRequestBuilder createRedirectRequestBuilder(Settings settings);
 
-  OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings);
+  OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings, String code);
 
 }

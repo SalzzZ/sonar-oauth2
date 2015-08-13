@@ -65,7 +65,7 @@ public class OAuth2ValidationFilter extends ServletFilter {
       LOG.info("Enter Validation Filter.");
       OAuthAuthzResponse oar = OAuthAuthzResponse.oauthCodeAuthzResponse(httpRequest);
       String code = oar.getCode();
-      OAuthClientRequest clientReq = client.getTokenRequest(code);
+      OAuthClientRequest clientReq = client.getTokenRequest("google", code);
       OAuthClient client = new OAuthClient(new URLConnectionClient());
       OAuthJSONAccessTokenResponse tokenResponse = client.accessToken(clientReq);
       String accessToken = tokenResponse.getAccessToken();
