@@ -57,12 +57,15 @@ public class OAuth2AuthenticationFilterTest {
   @Test
   public void testDoFilter() throws Exception {
     HttpServletRequest request = mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
-    HttpServletResponse response = mock(HttpServletResponse.class);
+    when(request.getSession(true).getAttribute(anyString())).thenReturn(null);
+    HttpServletResponse response = mock(HttpServletResponse.class, RETURNS_DEEP_STUBS);
     FilterChain chain = mock(FilterChain.class);
-    OAuth2Client client = mock(OAuth2Client.class);
+    OAuth2Client client = mock(OAuth2Client.class, RETURNS_DEEP_STUBS);
+    when(client.getRedirectRequest(anyString()).getLocationUri()).thenReturn("url");
+
     OAuth2AuthenticationFilter instance = new OAuth2AuthenticationFilter(client);
     instance.doFilter(request, response, chain);
-    verify(response).sendRedirect(anyString());
+    verify(response).sendRedirect("url");
   }
 
   /**
