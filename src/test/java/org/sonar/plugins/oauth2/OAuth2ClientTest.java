@@ -42,7 +42,7 @@ public class OAuth2ClientTest {
   }
 
   @Test
-  public void client_does_not_support_unknow_provider() throws Exception {
+  public void getRedirectRequest_does_not_support_unknow_provider() throws Exception {
     thrown.expect(OAuth2PluginException.class);
     thrown.expectMessage("Provider 'UNKNOWN' is not supported");
     Settings settings = new Settings()
@@ -53,7 +53,7 @@ public class OAuth2ClientTest {
   }
 
   @Test
-  public void client_does_not_support_null_provider() throws Exception {
+  public void getRedirectRequest_does_not_support_null_provider() throws Exception {
     thrown.expect(OAuth2PluginException.class);
     thrown.expectMessage("Provider 'NULL' is not supported");
     Settings settings = new Settings()
@@ -64,7 +64,7 @@ public class OAuth2ClientTest {
   }
 
   @Test
-  public void client_does_not_support_empty_provider() throws Exception {
+  public void getRedirectRequest_does_not_support_empty_provider() throws Exception {
     thrown.expect(OAuth2PluginException.class);
     thrown.expectMessage("Provider '' is not supported");
     Settings settings = new Settings()
@@ -73,5 +73,52 @@ public class OAuth2ClientTest {
 
     client.getRedirectRequest("  ");
   }
+
+  @Test
+  public void getTokenRequest_given_a_valid_code() throws Exception {
+    Settings settings = new Settings()
+            .setProperty(OAuth2Client.PROPERTY_SONAR_URL, "https://myserver:9000/sonar");
+    OAuth2Client client = new OAuth2Client(settings);
+
+    OAuthClientRequest request = client.getTokenRequest("google", "validToken");
+    assertThat(request.getLocationUri()).startsWith("https://accounts.google.com/o/oauth2/token");
+
+    request = client.getTokenRequest("github", "code");
+    assertThat(request.getLocationUri()).startsWith("https://github.com/login/oauth/access_token");
+  }
+
+  @Test
+  public void getTokenRequest_does_not_support_unknow_provider() throws Exception {
+    thrown.expect(OAuth2PluginException.class);
+    thrown.expectMessage("Provider 'UNKNOWN' is not supported");
+    Settings settings = new Settings()
+            .setProperty(OAuth2Client.PROPERTY_SONAR_URL, "https://myserver:9000/sonar");
+    OAuth2Client client = new OAuth2Client(settings);
+
+    client.getTokenRequest("unknown", "code");
+  }
+
+  @Test
+  public void getTokenRequest_does_not_support_null_code() throws Exception {
+    thrown.expect(OAuth2PluginException.class);
+    thrown.expectMessage("code is required");
+    Settings settings = new Settings()
+            .setProperty(OAuth2Client.PROPERTY_SONAR_URL, "https://myserver:9000/sonar");
+    OAuth2Client client = new OAuth2Client(settings);
+
+    client.getTokenRequest("google", null);
+  }
+
+  @Test
+  public void getRedirectRequest_does_not_support_empty_code() throws Exception {
+    thrown.expect(OAuth2PluginException.class);
+    thrown.expectMessage("code is required");
+    Settings settings = new Settings()
+            .setProperty(OAuth2Client.PROPERTY_SONAR_URL, "https://myserver:9000/sonar");
+    OAuth2Client client = new OAuth2Client(settings);
+
+    client.getTokenRequest("google", "  ");
+  }
+
 
 }

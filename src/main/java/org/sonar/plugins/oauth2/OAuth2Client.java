@@ -69,10 +69,7 @@ public class OAuth2Client implements ServerExtension {
   public OAuthClientRequest getRedirectRequest(String providerName) throws OAuth2PluginException {
     String name = "";
     try {
-      if(providerName == null) {
-        throw new OAuth2PluginException("Provider 'NULL' is not supported");
-      }
-      name = providerName.toUpperCase().trim();
+      name = sanitizeProviderName(providerName);
       OAuth2Provider provider = Providers.valueOf(name).get();
       return provider.createRedirectRequestBuilder(this.settings).buildQueryMessage();
     } catch (IllegalArgumentException e) {
@@ -81,14 +78,27 @@ public class OAuth2Client implements ServerExtension {
       throw new OAuth2PluginException("Cannot build redirect request.", e);
     }
   }
-  
-  public OAuthClientRequest getTokenRequest(String code) throws OAuthSystemException {
-    return OAuthClientRequest
-            .tokenProvider(OAuthProviderType.GOOGLE)
-            .setGrantType(GrantType.AUTHORIZATION_CODE)
-            .setClientId(settings.getString(PROPERTY_CLIENT_ID))
-            .setRedirectURI(settings.getString(PROPERTY_SONAR_URL) + "/oauth2/callback")
-            .setCode(code)
-            .buildQueryMessage();
+
+ public OAuthClientRequest getTokenRequest(String providerName, String code) throws OAuth2PluginException {
+   String name = "";
+   try {
+     if(code == null || code.trim().equals("")) {
+       throw new OAuth2PluginException("code is required");
+     }
+     name = sanitizeProviderName(providerName);
+     OAuth2Provider provider = Providers.valueOf(name).get();
+     return provider.createTokenRequestBuilder(this.settings).buildQueryMessage();
+   } catch (IllegalArgumentException e) {
+     throw new OAuth2PluginException("Provider '" + name + "' is not supported");
+   } catch (OAuthSystemException e) {
+     throw new OAuth2PluginException("Cannot build redirect request.", e);
+   }
+ }
+
+  private String sanitizeProviderName(String providerName) throws OAuth2PluginException {
+    if(providerName == null) {
+      throw new OAuth2PluginException("Provider 'NULL' is not supported");
+    }
+    return providerName.toUpperCase().trim();
   }
 }
