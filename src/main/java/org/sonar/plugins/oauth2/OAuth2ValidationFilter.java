@@ -16,10 +16,8 @@
 package org.sonar.plugins.oauth2;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;

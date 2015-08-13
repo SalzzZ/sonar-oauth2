@@ -58,7 +58,6 @@ public class OAuth2Plugin extends SonarPlugin {
         extensions.add(OAuth2AuthenticationFilter.class);
         extensions.add(OAuth2Authenticator.class);
         extensions.add(OAuth2Client.class);
-        extensions.add(OAuth2LogoutFilter.class);
         extensions.add(OAuth2SecurityRealm.class);
         extensions.add(OAuth2UserProvider.class);
       }

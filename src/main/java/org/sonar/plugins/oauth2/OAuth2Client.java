@@ -16,16 +16,11 @@
  */
 package org.sonar.plugins.oauth2;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
-import org.apache.oltu.oauth2.client.request.OAuthClientRequest.AuthenticationRequestBuilder;
 import org.apache.oltu.oauth2.common.OAuthProviderType;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.sonar.api.config.Settings;
 import org.sonar.api.ServerExtension;
-import org.sonar.api.security.UserDetails;
-import org.sonar.plugins.oauth2.provider.GoogleProvider;
 import org.sonar.plugins.oauth2.provider.OAuth2Provider;
 import org.sonar.plugins.oauth2.provider.Providers;
 
@@ -41,13 +36,7 @@ public class OAuth2Client implements ServerExtension {
   public static final String PROPERTY_SECRET = "sonar.oauth2.secret";
   public static final String PROPERTY_CALLBACK_URI = "oauth2/callback";
 
-  static final String OAUTH2_SCOPE_EMAIL = "email";
-  
-  OAuthProviderType providerType = null;
-  String clientSecret = null;
   Settings settings = null;
-  String authLocation = null;
-  String tokenLocation = null;
 
   /**
    * Default constructor. Accepts Sonar {@link Settings} in order to bootstrap

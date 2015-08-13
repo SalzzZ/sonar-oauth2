@@ -54,7 +54,7 @@ public class OAuth2PluginTest {
             .setProperty("sonar.authenticator.createUsers", "true");
     List<ServerExtension> extensions = (List<ServerExtension>) new OAuth2Plugin.Extensions(settings).provide();
 
-    assertThat(extensions).hasSize(7);
+    assertThat(extensions).hasSize(6);
     assertThat(extensions).doesNotHaveDuplicates();
     assertThat(extensions).contains(OAuth2AuthenticationFilter.class);
   }
