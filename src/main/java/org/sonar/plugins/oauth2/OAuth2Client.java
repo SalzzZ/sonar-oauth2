@@ -76,7 +76,7 @@ public class OAuth2Client implements ServerExtension {
      }
      name = sanitizeProviderName(providerName);
      OAuth2Provider provider = Providers.valueOf(name).get();
-     return provider.createTokenRequestBuilder(this.settings, code).buildQueryMessage();
+     return provider.createTokenRequestBuilder(this.settings, code).buildBodyMessage();
    } catch (IllegalArgumentException e) {
      throw new OAuth2PluginException("Provider '" + name + "' is not supported");
    } catch (OAuthSystemException e) {

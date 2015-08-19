@@ -52,14 +52,16 @@ public class GoogleProviderTest {
     Settings settings = new Settings()
             .setProperty(OAuth2Client.PROPERTY_PROVIDER, "Google")
             .setProperty(OAuth2Client.PROPERTY_SECRET, "Secret")
-            .setProperty(OAuth2Client.PROPERTY_CLIENT_ID, "myClientId");
+            .setProperty(OAuth2Client.PROPERTY_CLIENT_ID, "myClientId")
+            .setProperty(OAuth2Client.PROPERTY_SONAR_URL, "http://sonar:9111/web-context");
 
-    OAuthClientRequest request = provider.createTokenRequestBuilder(settings, "token").buildQueryMessage();
+    OAuthClientRequest request = provider.createTokenRequestBuilder(settings, "authorizationCode").buildBodyMessage();
     assertThat(request.getLocationUri()).startsWith(OAuthProviderType.GOOGLE.getTokenEndpoint());
-    assertThat(request.getLocationUri()).contains("grant_type=password");
-    assertThat(request.getLocationUri()).contains("client_id=myClientId");
-    assertThat(request.getLocationUri()).contains("client_secret=Secret");
-    assertThat(request.getLocationUri()).contains("refresh_token=token");
+    assertThat(request.getBody()).contains("grant_type=authorization_code");
+    assertThat(request.getBody()).contains("client_id=myClientId");
+    assertThat(request.getBody()).contains("client_secret=Secret");
+    assertThat(request.getBody()).contains("redirect_uri=http%3A%2F%2Fsonar%3A9111%2Fweb-context");
+    assertThat(request.getBody()).contains("code=authorizationCode");
   }
 
 

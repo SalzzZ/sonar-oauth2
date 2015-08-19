@@ -33,6 +33,8 @@ public class GoogleProvider extends GenericProvider {
     redirectRequestBuilder = super.createRedirectRequestBuilder(settings);
     redirectRequestBuilder.setParameter("response_type", "code");
     redirectRequestBuilder.setParameter("scope", SCOPE);
+    redirectRequestBuilder.setParameter("access_type", "offline");
+
     return redirectRequestBuilder;
   }
 

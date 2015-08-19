@@ -27,6 +27,7 @@ import org.sonar.api.security.UserDetails;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import static org.mockito.Mockito.*;
 
@@ -38,6 +39,7 @@ public class OAuth2ValidationFilterTest {
   @Mock private OAuth2Client client;
   @Mock private HttpServletRequest request;
   @Mock private HttpServletResponse response;
+  @Mock private HttpSession session;
   @Mock private FilterChain chain;
 
 
@@ -60,6 +62,7 @@ public class OAuth2ValidationFilterTest {
   public void filter_should_add_user_in_request_parameter() throws Exception {
     OAuth2ValidationFilter filter = new OAuth2ValidationFilter(client);
     when(request.getSession()).thenThrow(new NullPointerException());
+    when(request.getSession(true)).thenReturn(session);
 
     filter.doFilter(request, response, chain);
 

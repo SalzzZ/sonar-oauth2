@@ -25,6 +25,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.client.OAuthClient;
@@ -40,7 +41,7 @@ import org.sonar.api.web.ServletFilter;
 @Slf4j
 public class OAuth2ValidationFilter extends ServletFilter {
 
-  public final static String OAUTH2_CODE = "sonar.oauth2.code";
+  public final static String OAUTH2_TOKEN_SESSION_KEY = "sonar.oauth2.token";
   protected static String UNAUTHORIZED_URI = "/sessions/login";
 
   final private OAuth2Client client;
@@ -68,12 +69,9 @@ public class OAuth2ValidationFilter extends ServletFilter {
       OAuthClientRequest clientReq = client.getTokenRequest("google", code);
       OAuthClient client = new OAuthClient(new URLConnectionClient());
       OAuthJSONAccessTokenResponse tokenResponse = client.accessToken(clientReq);
-      String accessToken = tokenResponse.getAccessToken();
-      LOG.info("Token {} expires in {}.", accessToken, tokenResponse.getExpiresIn());
-      URL url = new URL("https://www.googleapis.com/oauth2/v1/userinfo");
-      URLConnection urlConnection = url.openConnection();
-      urlConnection.setRequestProperty("access_token", accessToken);
-      LOG.info((String)urlConnection.getContent());
+      HttpSession session = httpRequest.getSession(true);
+      session.setAttribute(OAUTH2_TOKEN_SESSION_KEY, tokenResponse);
+      LOG.info("Token {} expires in {}.", tokenResponse.getAccessToken(), tokenResponse.getExpiresIn());
       chain.doFilter(request, response);
     } catch (Exception e) {
       LOG.error("Cannot check identity.", e);

@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
 import org.sonar.api.web.ServletFilter;
 
 /**
@@ -56,7 +57,7 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     HttpSession session = ((HttpServletRequest) request).getSession(true);
-    if (session.getAttribute(USER_ATTRIBUTE) == null) {   // TODO: Check session state for an existing OAuth code/refresh token
+    if (session.getAttribute(OAuth2ValidationFilter.OAUTH2_TOKEN_SESSION_KEY) == null) {   // TODO: Check session state for an existing OAuth code/refresh token
       try {
         OAuthClientRequest req = client.getRedirectRequest("google");
         ((HttpServletResponse) response).sendRedirect(req.getLocationUri());
@@ -64,6 +65,11 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
         LOG.error("Error creating OAuthClientRequest", ex);
       }
     } else {
+      OAuthJSONAccessTokenResponse token
+              = (OAuthJSONAccessTokenResponse) session.getAttribute(OAuth2ValidationFilter.OAUTH2_TOKEN_SESSION_KEY);
+      if (session.getAttribute(USER_ATTRIBUTE) == null){
+        //retrieve user
+      }
       chain.doFilter(request, response);
     }
   }

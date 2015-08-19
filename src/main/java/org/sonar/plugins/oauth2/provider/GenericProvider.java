@@ -46,8 +46,7 @@ public class GenericProvider implements OAuth2Provider {
 
   @Override
   public OAuthClientRequest.AuthenticationRequestBuilder createRedirectRequestBuilder(Settings settings) {
-    final String baseUrl = settings.getString(OAuth2Client.PROPERTY_SONAR_URL);
-    final String callback = baseUrl + (baseUrl.endsWith("/") ? "" : "/") + OAuth2Client.PROPERTY_CALLBACK_URI;
+    final String callback = getRedirectUri(settings);
     return OAuthClientRequest.authorizationLocation(getAuthzEndpoint())
             .setClientId(settings.getString(OAuth2Client.PROPERTY_CLIENT_ID))
             .setRedirectURI(callback)
@@ -56,10 +55,18 @@ public class GenericProvider implements OAuth2Provider {
 
   @Override
   public OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings, String code) {
+    final String callback = getRedirectUri(settings);
     return OAuthClientRequest.tokenLocation(getTokenEndpoint())
             .setClientId(settings.getString(OAuth2Client.PROPERTY_CLIENT_ID))
             .setClientSecret(settings.getString(OAuth2Client.PROPERTY_SECRET))
             .setCode(code)
+            .setRedirectURI(callback)
             .setGrantType(GrantType.AUTHORIZATION_CODE);
   }
+
+  private String getRedirectUri(Settings settings) {
+    final String baseUrl = settings.getString(OAuth2Client.PROPERTY_SONAR_URL);
+    return baseUrl + (baseUrl.endsWith("/") ? "" : "/") + OAuth2Client.PROPERTY_CALLBACK_URI;
+  }
+
 }
