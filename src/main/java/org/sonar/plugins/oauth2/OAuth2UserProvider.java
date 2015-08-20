@@ -16,6 +16,8 @@
 package org.sonar.plugins.oauth2;
 
 import static org.sonar.plugins.oauth2.OAuth2AuthenticationFilter.USER_ATTRIBUTE;
+
+import lombok.extern.slf4j.Slf4j;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
 
@@ -23,10 +25,13 @@ import org.sonar.api.security.UserDetails;
  * 
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
  */
+@Slf4j
 public class OAuth2UserProvider extends ExternalUsersProvider {
 
   @Override
   public UserDetails doGetUserDetails(Context context) {
-    return (UserDetails) context.getRequest().getAttribute(USER_ATTRIBUTE);
+    UserDetails user = (UserDetails) context.getRequest().getAttribute(USER_ATTRIBUTE);
+    LOG.info("return User: {}", user);
+    return user;
   }
 }

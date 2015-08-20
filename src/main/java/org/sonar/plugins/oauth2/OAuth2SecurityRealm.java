@@ -16,6 +16,7 @@
  */
 package org.sonar.plugins.oauth2;
 
+import lombok.extern.slf4j.Slf4j;
 import org.sonar.api.security.Authenticator;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.SecurityRealm;
@@ -25,12 +26,14 @@ import org.sonar.api.security.SecurityRealm;
  * @author <a href="">Deven Phillips</a>
  * @author <a href="https://github.com/alexlew">Alexandre Lewandowski</a>
  */
+@Slf4j
 public class OAuth2SecurityRealm extends SecurityRealm {
     
     public static final String KEY = "oauth2";
 
     @Override
     public Authenticator doGetAuthenticator() {
+        LOG.info("doGetAuthenticator");
         return new OAuth2Authenticator();
     }
 

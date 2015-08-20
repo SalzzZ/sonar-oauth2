@@ -42,7 +42,7 @@ import org.sonar.api.web.ServletFilter;
 public class OAuth2ValidationFilter extends ServletFilter {
 
   public final static String OAUTH2_TOKEN_SESSION_KEY = "sonar.oauth2.token";
-  protected static String UNAUTHORIZED_URI = "/sessions/login";
+  protected static String UNAUTHORIZED_URI = "/oauth2/unauthorized";
 
   final private OAuth2Client client;
 
@@ -56,7 +56,7 @@ public class OAuth2ValidationFilter extends ServletFilter {
 
   @Override
   public UrlPattern doGetPattern() {
-    return UrlPattern.create("/oauth2/callback*");
+    return UrlPattern.create("/oauth2/validate");
   }
 
   @Override

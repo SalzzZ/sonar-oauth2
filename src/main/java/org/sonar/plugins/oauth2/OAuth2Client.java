@@ -34,7 +34,7 @@ public class OAuth2Client implements ServerExtension {
   public static final String PROPERTY_PROVIDER = "sonar.oauth2.provider";
   public static final String PROPERTY_CLIENT_ID = "sonar.oauth2.clientid";
   public static final String PROPERTY_SECRET = "sonar.oauth2.secret";
-  public static final String PROPERTY_CALLBACK_URI = "oauth2/callback";
+  public static final String PROPERTY_CALLBACK_URI = "oauth2/validate";
 
   Settings settings = null;
 

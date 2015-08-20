@@ -65,11 +65,6 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
         LOG.error("Error creating OAuthClientRequest", ex);
       }
     } else {
-      OAuthJSONAccessTokenResponse token
-              = (OAuthJSONAccessTokenResponse) session.getAttribute(OAuth2ValidationFilter.OAUTH2_TOKEN_SESSION_KEY);
-      if (session.getAttribute(USER_ATTRIBUTE) == null){
-        //retrieve user
-      }
       chain.doFilter(request, response);
     }
   }

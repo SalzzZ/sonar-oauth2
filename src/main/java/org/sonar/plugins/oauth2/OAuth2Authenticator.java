@@ -15,17 +15,19 @@
  */
 package org.sonar.plugins.oauth2;
 
+import lombok.extern.slf4j.Slf4j;
 import org.sonar.api.security.Authenticator;
 
 /**
- *
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
  */
+@Slf4j
 public class OAuth2Authenticator extends Authenticator {
 
-    @Override
-    public boolean doAuthenticate(Context context) {
-        return context.getRequest().getAttribute(OAuth2AuthenticationFilter.USER_ATTRIBUTE) != null;
-    }
+  @Override
+  public boolean doAuthenticate(Context context) {
+    LOG.warn("Call doAuthenticate.");
+    return context.getRequest().getAttribute(OAuth2AuthenticationFilter.USER_ATTRIBUTE) != null;
+  }
 
 }
