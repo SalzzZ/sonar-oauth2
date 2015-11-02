@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.oauth2.provider;
+package org.salvian.sonar.plugins.oauth2.provider;
 
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
 import org.apache.oltu.oauth2.common.OAuthProviderType;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
+import org.salvian.sonar.plugins.oauth2.GenericProfile;
 import org.sonar.api.config.Settings;
-import org.sonar.plugins.oauth2.OAuth2Client;
+import org.salvian.sonar.plugins.oauth2.OAuth2Client;
 
 public class GenericProvider implements OAuth2Provider {
 
-  private OAuthProviderType provider;
+  private final OAuthProviderType provider;
 
   public GenericProvider(OAuthProviderType provider) {
     this.provider = provider;
@@ -64,9 +66,14 @@ public class GenericProvider implements OAuth2Provider {
             .setGrantType(GrantType.AUTHORIZATION_CODE);
   }
 
+  @Override
+  public GenericProfile validateTokenAndGetUser(Settings settings, OAuthJSONAccessTokenResponse tokenResponse) {
+    return null;
+  }
+
   private String getRedirectUri(Settings settings) {
     final String baseUrl = settings.getString(OAuth2Client.PROPERTY_SONAR_URL);
-    return baseUrl + (baseUrl.endsWith("/") ? "" : "/") + OAuth2Client.PROPERTY_CALLBACK_URI;
+    return baseUrl + OAuth2Client.PROPERTY_CALLBACK_URI;
   }
 
 }

@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.oauth2.provider;
+package org.salvian.sonar.plugins.oauth2.provider;
 
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
+import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
+import org.salvian.sonar.plugins.oauth2.GenericProfile;
 import org.sonar.api.config.Settings;
 
 public interface OAuth2Provider {
 
-  String getAuthzEndpoint();
+    String getAuthzEndpoint();
 
-  String getProviderName();
+    String getProviderName();
 
-  String getTokenEndpoint();
+    String getTokenEndpoint();
 
-  OAuthClientRequest.AuthenticationRequestBuilder createRedirectRequestBuilder(Settings settings);
+    OAuthClientRequest.AuthenticationRequestBuilder createRedirectRequestBuilder(Settings settings);
 
-  OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings, String code);
+    OAuthClientRequest.TokenRequestBuilder createTokenRequestBuilder(Settings settings, String code);
 
+    GenericProfile validateTokenAndGetUser(Settings settings, OAuthJSONAccessTokenResponse tokenResponse);
 }

@@ -14,15 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.oauth2;
-
-import java.util.List;
+package org.salvian.sonar.plugins.oauth2;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import org.salvian.sonar.plugins.oauth2.provider.GoogleProvider;
 import org.sonar.api.*;
 import org.sonar.api.config.Settings;
+
+import java.util.List;
 
 /**
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
@@ -34,39 +35,40 @@ import org.sonar.api.config.Settings;
                 + "(possible values are: FACEBOOK, FOURSQUARE, GITHUB, GOOGLE, INSTAGRAM, "
                 + "LINKEDIN, MICROSOFT, PAYPAL, REDDIT, SALESFORCE, YAMMER)"),
         @Property(key = OAuth2Client.PROPERTY_CLIENT_ID, name = "OAuth2 Client ID"),
-        @Property(key = OAuth2Client.PROPERTY_SECRET, name = "OAuth2 Client Secret")
+        @Property(key = OAuth2Client.PROPERTY_SECRET, name = "OAuth2 Client Secret"),
+        @Property(key = GoogleProvider.PROPERTY_HD, name = "Sonar Server Base URL")
 })
 public class OAuth2Plugin extends SonarPlugin {
 
-  public List getExtensions() {
-    return ImmutableList.of(Extensions.class);
-  }
-
-  public static final class Extensions extends ExtensionProvider implements ServerExtension {
-    private Settings settings;
-
-    public Extensions(Settings settings) {
-      this.settings = settings;
+    public List getExtensions() {
+        return ImmutableList.of(Extensions.class);
     }
 
-    @Override
-    public Object provide() {
-      List<Class> extensions = Lists.newArrayList();
-      if (isRealmEnabled()) {
-        Preconditions.checkState(settings.getBoolean("sonar.authenticator.createUsers"), "Property sonar.authenticator.createUsers must be set to true.");
-        extensions.add(OAuth2ValidationFilter.class);
-        extensions.add(OAuth2AuthenticationFilter.class);
-        extensions.add(OAuth2Authenticator.class);
-        extensions.add(OAuth2Client.class);
-        extensions.add(OAuth2SecurityRealm.class);
-        extensions.add(OAuth2UserProvider.class);
-      }
-      return extensions;
-    }
+    public static final class Extensions extends ExtensionProvider implements ServerExtension {
+        private final Settings settings;
 
-    private boolean isRealmEnabled() {
-      return OAuth2SecurityRealm.KEY.equalsIgnoreCase(settings.getString("sonar.security.realm"));
-    }
+        public Extensions(Settings settings) {
+            this.settings = settings;
+        }
 
-  }
+        @Override
+        public Object provide() {
+            List<Class> extensions = Lists.newArrayList();
+            if (isRealmEnabled()) {
+                Preconditions.checkState(settings.getBoolean("sonar.authenticator.createUsers"), "Property sonar.authenticator.createUsers must be set to true.");
+                extensions.add(OAuth2ValidationFilter.class);
+                extensions.add(OAuth2AuthenticationFilter.class);
+                extensions.add(OAuth2Authenticator.class);
+                extensions.add(OAuth2Client.class);
+                extensions.add(OAuth2SecurityRealm.class);
+                extensions.add(OAuth2UserProvider.class);
+            }
+            return extensions;
+        }
+
+        private boolean isRealmEnabled() {
+            return OAuth2SecurityRealm.KEY.equalsIgnoreCase(settings.getString("sonar.security.realm"));
+        }
+
+    }
 }

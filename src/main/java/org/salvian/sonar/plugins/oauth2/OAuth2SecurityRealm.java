@@ -14,9 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.oauth2;
+package org.salvian.sonar.plugins.oauth2;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.security.Authenticator;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.SecurityRealm;
@@ -26,9 +27,8 @@ import org.sonar.api.security.SecurityRealm;
  * @author <a href="">Deven Phillips</a>
  * @author <a href="https://github.com/alexlew">Alexandre Lewandowski</a>
  */
-@Slf4j
 public class OAuth2SecurityRealm extends SecurityRealm {
-    
+    private final static Logger LOG = LoggerFactory.getLogger(OAuth2SecurityRealm.class);
     public static final String KEY = "oauth2";
 
     @Override
@@ -41,7 +41,7 @@ public class OAuth2SecurityRealm extends SecurityRealm {
     public ExternalUsersProvider getUsersProvider() {
         return new OAuth2UserProvider();
     }
-    
+
     @Override
     public String getName() {
         return KEY;

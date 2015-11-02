@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.oauth2;
+package org.salvian.sonar.plugins.oauth2;
 
 public class OAuth2PluginException extends Exception {
 
-  public OAuth2PluginException() {
-    super();
-  }
+    public OAuth2PluginException() {
+        super();
+    }
 
-  public OAuth2PluginException(String message) {
-    super(message);
-  }
+    public OAuth2PluginException(String message) {
+        super(message);
+    }
 
-  public OAuth2PluginException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    public OAuth2PluginException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-  public OAuth2PluginException(Throwable cause) {
-    super(cause);
-  }
+    public OAuth2PluginException(Throwable cause) {
+        super(cause);
+    }
 
 }

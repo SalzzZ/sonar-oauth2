@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.oauth2;
+package org.salvian.sonar.plugins.oauth2;
 
-import static org.sonar.plugins.oauth2.OAuth2AuthenticationFilter.USER_ATTRIBUTE;
-
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
 
+import static org.salvian.sonar.plugins.oauth2.OAuth2AuthenticationFilter.USER_ATTRIBUTE;
+
 /**
- * 
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
  */
-@Slf4j
 public class OAuth2UserProvider extends ExternalUsersProvider {
+    private final static Logger LOG = LoggerFactory.getLogger(OAuth2UserProvider.class);
 
-  @Override
-  public UserDetails doGetUserDetails(Context context) {
-    UserDetails user = (UserDetails) context.getRequest().getAttribute(USER_ATTRIBUTE);
-    LOG.info("return User: {}", user);
-    return user;
-  }
+    @Override
+    public UserDetails doGetUserDetails(Context context) {
+        UserDetails user = (UserDetails) context.getRequest().getAttribute(USER_ATTRIBUTE);
+        LOG.info("return profile: {}", user);
+        return user;
+    }
 }
