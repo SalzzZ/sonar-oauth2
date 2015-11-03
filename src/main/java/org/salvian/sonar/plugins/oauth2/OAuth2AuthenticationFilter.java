@@ -42,7 +42,7 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
 
     @Override
     public UrlPattern doGetPattern() {
-        return UrlPattern.create("/sessions/new");
+        return UrlPattern.create("/sessions/oauth2");
     }
 
     @Override
@@ -51,9 +51,9 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        LOG.info(GoogleProvider.PROPERTY_HD);
         HttpSession session = ((HttpServletRequest) request).getSession(true);
-        if (session.getAttribute(OAuth2ValidationFilter.OAUTH2_TOKEN_SESSION_KEY) == null) {   // TODO: Check session state for an existing OAuth code/refresh token
+        if (session.getAttribute(OAuth2ValidationFilter.OAUTH2_TOKEN_SESSION_KEY) == null) {
+            // TODO: Check session state for an existing OAuth code/refresh token
             try {
                 OAuthClientRequest req = client.getRedirectRequest("GOOGLE");
                 ((HttpServletResponse) response).sendRedirect(req.getLocationUri());
@@ -61,7 +61,7 @@ public class OAuth2AuthenticationFilter extends ServletFilter {
                 LOG.error("Error creating OAuthClientRequest", ex);
             }
         } else {
-            chain.doFilter(request, response);
+            ((HttpServletResponse) response).sendRedirect("/");
         }
     }
 

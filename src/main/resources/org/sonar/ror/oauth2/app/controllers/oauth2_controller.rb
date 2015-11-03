@@ -1,11 +1,10 @@
-class OAuth2Controller < ApplicationController
+class Oauth2Controller < ApplicationController
 
   skip_before_filter :check_authentication
 
-  def validate
+  def callback
     begin
       self.current_user = User.authenticate(nil, nil, servlet_request)
-
     rescue Exception => e
       self.current_user = nil
       Rails.logger.error(e.message)

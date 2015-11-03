@@ -31,6 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static org.salvian.sonar.plugins.oauth2.OAuth2AuthenticationFilter.USER_ATTRIBUTE;
+
 /**
  * @author <a href="">Deven Phillips</a>
  */
@@ -58,7 +60,6 @@ public class OAuth2ValidationFilter extends ServletFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            LOG.info("Enter Validation Filter.");
             OAuthAuthzResponse oar = OAuthAuthzResponse.oauthCodeAuthzResponse(httpRequest);
             String code = oar.getCode();
             OAuthClientRequest clientReq = client.getTokenRequest("GOOGLE", code);
@@ -66,11 +67,11 @@ public class OAuth2ValidationFilter extends ServletFilter {
             OAuthJSONAccessTokenResponse tokenResponse = client.accessToken(clientReq);
             HttpSession session = httpRequest.getSession(true);
             session.setAttribute(OAUTH2_TOKEN_SESSION_KEY, tokenResponse);
-            LOG.info("Token {} expires in {}.", tokenResponse.getAccessToken(), tokenResponse.getExpiresIn());
             UserDetails user = this.client.getVerifiedUser("GOOGLE", tokenResponse);
-            if (user != null)
-                request.setAttribute(OAuth2AuthenticationFilter.USER_ATTRIBUTE, user);
-            chain.doFilter(request, response);
+            if (user != null) {
+                request.setAttribute(USER_ATTRIBUTE, user);
+                chain.doFilter(request,response);
+            }
         } catch (Exception e) {
             LOG.error("Cannot check identity.", e);
             ((HttpServletResponse) response).sendRedirect(UNAUTHORIZED_URI);

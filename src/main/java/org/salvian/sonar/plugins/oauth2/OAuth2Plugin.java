@@ -36,7 +36,7 @@ import java.util.List;
                 + "LINKEDIN, MICROSOFT, PAYPAL, REDDIT, SALESFORCE, YAMMER)"),
         @Property(key = OAuth2Client.PROPERTY_CLIENT_ID, name = "OAuth2 Client ID"),
         @Property(key = OAuth2Client.PROPERTY_SECRET, name = "OAuth2 Client Secret"),
-        @Property(key = GoogleProvider.PROPERTY_HD, name = "Sonar Server Base URL")
+        @Property(key = GoogleProvider.PROPERTY_GOOGLE_HD, name = "Google OAUTH2 'hd' parameter")
 })
 public class OAuth2Plugin extends SonarPlugin {
 
@@ -56,11 +56,12 @@ public class OAuth2Plugin extends SonarPlugin {
             List<Class> extensions = Lists.newArrayList();
             if (isRealmEnabled()) {
                 Preconditions.checkState(settings.getBoolean("sonar.authenticator.createUsers"), "Property sonar.authenticator.createUsers must be set to true.");
-                extensions.add(OAuth2ValidationFilter.class);
+                extensions.add(OAuth2SecurityRealm.class);
+                extensions.add(LoginPageRedirectFilter.class);
                 extensions.add(OAuth2AuthenticationFilter.class);
+                extensions.add(OAuth2ValidationFilter.class);
                 extensions.add(OAuth2Authenticator.class);
                 extensions.add(OAuth2Client.class);
-                extensions.add(OAuth2SecurityRealm.class);
                 extensions.add(OAuth2UserProvider.class);
             }
             return extensions;

@@ -34,7 +34,7 @@ import java.util.Collections;
 
 public class GoogleProvider extends GenericProvider {
     private static final Logger LOG = LoggerFactory.getLogger(GoogleProvider.class);
-    public static final String PROPERTY_HD = "sonar.oauth2.google.hd";
+    public static final String PROPERTY_GOOGLE_HD = "sonar.oauth2.google.hd";
 
     private static final String SCOPE = "openid profile email";
 
@@ -49,15 +49,15 @@ public class GoogleProvider extends GenericProvider {
         redirectRequestBuilder.setParameter("response_type", "code");
         redirectRequestBuilder.setParameter("scope", SCOPE);
         redirectRequestBuilder.setParameter("access_type", "offline");
-        if (settings.hasKey(PROPERTY_HD))
-            redirectRequestBuilder.setParameter("hd", settings.getString(PROPERTY_HD));
+        if (settings.hasKey(PROPERTY_GOOGLE_HD))
+            redirectRequestBuilder.setParameter("hd", settings.getString(PROPERTY_GOOGLE_HD));
         return redirectRequestBuilder;
     }
 
     @Override
     public GenericProfile validateTokenAndGetUser(Settings settings, OAuthJSONAccessTokenResponse tokenResponse) {
         try {
-            //TODO use general method to validate Oauth2 token (instead of using 1 library per provider)
+            //TODO: use general method to validate Oauth2 token (instead of using 1 library per provider)
             HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
@@ -66,14 +66,13 @@ public class GoogleProvider extends GenericProvider {
             GoogleIdToken googleToken = verifier.verify(tokenResponse.getParam("id_token"));
             if (googleToken != null) {
                 GoogleIdToken.Payload payload = googleToken.getPayload();
-                if (!payload.getHostedDomain().equals("traveloka.com")) {
-                    LOG.error("Use your traveloka's google account to log in");
+                if (!payload.getHostedDomain().equals(PROPERTY_GOOGLE_HD)) {
+                    LOG.error("Use your " + PROPERTY_GOOGLE_HD + " google account to log in");
                 }
-                LOG.info("OK, logged on");
                 GenericProfile googleProfile = new GenericProfile();
-                String email=payload.getEmail();
+                String email = payload.getEmail();
                 googleProfile.setEmail(email);
-                googleProfile.setName(email.substring(0,email.indexOf("@")));
+                googleProfile.setName(email.substring(0, email.indexOf("@")));
                 return googleProfile;
             } else {
                 LOG.error("Nice try, but.. nope");

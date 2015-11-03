@@ -30,8 +30,6 @@ public class OAuth2UserProvider extends ExternalUsersProvider {
 
     @Override
     public UserDetails doGetUserDetails(Context context) {
-        UserDetails user = (UserDetails) context.getRequest().getAttribute(USER_ATTRIBUTE);
-        LOG.info("return profile: {}", user);
-        return user;
+        return (UserDetails) context.getRequest().getAttribute(USER_ATTRIBUTE);
     }
 }

@@ -23,7 +23,6 @@ import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.SecurityRealm;
 
 /**
- *
  * @author <a href="">Deven Phillips</a>
  * @author <a href="https://github.com/alexlew">Alexandre Lewandowski</a>
  */
@@ -32,8 +31,11 @@ public class OAuth2SecurityRealm extends SecurityRealm {
     public static final String KEY = "oauth2";
 
     @Override
+    public void init() {
+    }
+
+    @Override
     public Authenticator doGetAuthenticator() {
-        LOG.info("doGetAuthenticator");
         return new OAuth2Authenticator();
     }
 
