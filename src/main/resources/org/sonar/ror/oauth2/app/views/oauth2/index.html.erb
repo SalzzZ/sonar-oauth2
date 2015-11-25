@@ -1,43 +1,47 @@
 <div>
-    <div id="bd">
-        <div id="nonav" class="page-simple">
-            <table class="spaced">
-                <tbody><tr>
-                    <td align="center">
-                        <div id="login_form">
-                            <form action="/sessions/login" method="post">
-                                <input name="return_to_anchor" value="" type="hidden">
-                                <h3><label for="Login">Login</label></h3>
-                                <p>
-                                    <input id="login" maxlength="255" name="login" style="width:200px;" value="" type="text">
+  <div id="bd">
+    <div id="nonav" class="page-simple">
+      <div id="content"><form id="login_form" action="/sessions/login" method="post">
+        <input name="return_to_anchor" value="" type="hidden">
 
-                                </p>
-                                <h3><label for="Password">Password</label></h3>
-                                <p>
-                                    <input autocomplete="off" id="password" name="password" style="width:200px;" type="password">
-                                </p>
-                                <p>
-                                    <input id="remember_me" name="remember_me" value="1" type="checkbox"> <label for="remember_me">Remember me on this computer</label>
-                                </p>
-                                <p>
-                                    <input name="commit" value="Log in" type="submit">,
-                                    <a href="/" class="action">Cancel</a>, or
-                                    <a href="/sessions/oauth2" class="action">Login with Google</a>
+        <h1 class="maintenance-title text-center">Log In to SonarQube</h1>
 
-                                </p>
-                            </form>
 
-                        </div>
-                    </td>
-                </tr>
-                </tbody></table>
-            <script>
-                $j('#login').focus();
-                if (!$j('[name=return_to_anchor]').val()) {
-                    $j('[name=return_to_anchor]').val(window.location.hash);
-                }
-            </script>
+
+
+        <div class="big-spacer-bottom">
+          <label for="login" class="login-label">Login</label>
+          <input id="login" name="login" class="login-input" maxlength="255" required="" placeholder="Login" type="text">
 
         </div>
+
+        <p class="big-spacer-bottom">
+          <label for="password" class="login-label">Password</label>
+          <input id="password" name="password" class="login-input" required="" placeholder="Password" type="password">
+        </p>
+
+        <p class="big-spacer-bottom">
+          <input class="login-remember-me" id="remember_me" name="remember_me" value="1" checked="" type="checkbox">
+          <label for="remember_me"></label>
+          <label for="remember_me">Remember me on this computer</label>
+        </p>
+
+        <p class="text-right">
+          <button name="commit">Log in</button>
+          <a class="spacer-left" href="/">Cancel</a>, or
+          <a href="/sessions/oauth2" class="action">Login with Google</a>
+        </p>
+      </form>
+        <script>
+          (function ($) {
+            $('#login').focus();
+            var returnToAnchor = $('[name="return_to_anchor"]');
+            if (!returnToAnchor.val()) {
+              returnToAnchor.val(window.location.hash);
+            }
+          })(window.jQuery);
+        </script>
+      </div>
     </div>
+  </div>
 </div>
