@@ -32,9 +32,9 @@ import org.sonar.api.security.UserDetails;
 public class OAuth2Client implements ServerExtension {
 
     public static final String PROPERTY_SONAR_URL = "sonar.web.host";
-    public static final String PROPERTY_PROVIDER = "sonar.oauth2.provider";
-    public static final String PROPERTY_CLIENT_ID = "sonar.oauth2.clientId";
-    public static final String PROPERTY_SECRET = "sonar.oauth2.secret";
+    public static final String PROPERTY_PROVIDER = "sonar.auth.provider";
+    public static final String PROPERTY_CLIENT_ID = "sonar.auth.clientId";
+    public static final String PROPERTY_SECRET = "sonar.auth.secret";
     public static final String PROPERTY_CALLBACK_URI = "/oauth2/callback";
 
     private Settings settings = null;
@@ -72,7 +72,7 @@ public class OAuth2Client implements ServerExtension {
     public OAuthClientRequest getTokenRequest(String providerName, String code) throws OAuth2PluginException {
         String name = "";
         try {
-            if (code == null || code.trim().equals("")) {
+            if (code == null || "".equals(code.trim())) {
                 throw new OAuth2PluginException("code is required");
             }
             name = sanitizeProviderName(providerName);

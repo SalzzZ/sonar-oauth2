@@ -37,11 +37,11 @@ import static org.salvian.sonar.plugins.oauth2.OAuth2AuthenticationFilter.USER_A
  * @author <a href="">Deven Phillips</a>
  */
 public class OAuth2ValidationFilter extends ServletFilter {
-    private final static Logger LOG = LoggerFactory.getLogger(OAuth2ValidationFilter.class);
-    public final static String OAUTH2_TOKEN_SESSION_KEY = "sonar.oauth2.token";
+    private static final Logger LOG = LoggerFactory.getLogger(OAuth2ValidationFilter.class);
+    public static final String OAUTH2_TOKEN_SESSION_KEY = "sonar.oauth2.token";
     private static final String UNAUTHORIZED_URI = "/oauth2/unauthorized";
 
-    final private OAuth2Client client;
+    private final OAuth2Client client;
 
     public OAuth2ValidationFilter(OAuth2Client client) {
         this.client = client;

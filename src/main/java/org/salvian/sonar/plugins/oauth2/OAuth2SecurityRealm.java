@@ -27,7 +27,7 @@ import org.sonar.api.security.SecurityRealm;
  * @author <a href="https://github.com/alexlew">Alexandre Lewandowski</a>
  */
 public class OAuth2SecurityRealm extends SecurityRealm {
-    private final static Logger LOG = LoggerFactory.getLogger(OAuth2SecurityRealm.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OAuth2SecurityRealm.class);
     public static final String KEY = "oauth2";
 
     @Override

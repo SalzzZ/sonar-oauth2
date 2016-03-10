@@ -31,12 +31,10 @@ import java.util.List;
  */
 @Properties(value = {
         @Property(key = OAuth2Client.PROPERTY_SONAR_URL, name = "Sonar Server Base URL"),
-        @Property(key = OAuth2Client.PROPERTY_PROVIDER, name = "OAuth2 Provider Name "
-                + "(possible values are: FACEBOOK, FOURSQUARE, GITHUB, GOOGLE, INSTAGRAM, "
-                + "LINKEDIN, MICROSOFT, PAYPAL, REDDIT, SALESFORCE, YAMMER)"),
+        @Property(key = OAuth2Client.PROPERTY_PROVIDER, name = "OAuth2 Provider Name ", defaultValue="GOOGLE"),
         @Property(key = OAuth2Client.PROPERTY_CLIENT_ID, name = "OAuth2 Client ID"),
         @Property(key = OAuth2Client.PROPERTY_SECRET, name = "OAuth2 Client Secret"),
-        @Property(key = GoogleProvider.PROPERTY_GOOGLE_HD, name = "Google OAUTH2 'hd' parameter")
+        @Property(key = GoogleProvider.PROPERTY_GOOGLE_HD, name = "Google oauth2 'hd' parameter")
 })
 public class OAuth2Plugin extends SonarPlugin {
 

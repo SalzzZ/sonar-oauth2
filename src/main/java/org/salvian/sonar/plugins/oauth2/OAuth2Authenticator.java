@@ -23,7 +23,7 @@ import org.sonar.api.security.Authenticator;
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
  */
 public class OAuth2Authenticator extends Authenticator {
-    private final static Logger LOG = LoggerFactory.getLogger(OAuth2Authenticator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OAuth2Authenticator.class);
 
     @Override
     public boolean doAuthenticate(Context context) {

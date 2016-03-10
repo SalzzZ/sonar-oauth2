@@ -26,7 +26,7 @@ import static org.salvian.sonar.plugins.oauth2.OAuth2AuthenticationFilter.USER_A
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
  */
 public class OAuth2UserProvider extends ExternalUsersProvider {
-    private final static Logger LOG = LoggerFactory.getLogger(OAuth2UserProvider.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OAuth2UserProvider.class);
 
     @Override
     public UserDetails doGetUserDetails(Context context) {

@@ -1,47 +1,47 @@
-<div>
-  <div id="bd">
-    <div id="nonav" class="page-simple">
-      <div id="content"><form id="login_form" action="/sessions/login" method="post">
-        <input name="return_to_anchor" value="" type="hidden">
-
-        <h1 class="maintenance-title text-center">Log In to SonarQube</h1>
-
-
-
-
-        <div class="big-spacer-bottom">
-          <label for="login" class="login-label">Login</label>
-          <input id="login" name="login" class="login-input" maxlength="255" required="" placeholder="Login" type="text">
-
-        </div>
-
-        <p class="big-spacer-bottom">
-          <label for="password" class="login-label">Password</label>
-          <input id="password" name="password" class="login-input" required="" placeholder="Password" type="password">
-        </p>
-
-        <p class="big-spacer-bottom">
-          <input class="login-remember-me" id="remember_me" name="remember_me" value="1" checked="" type="checkbox">
-          <label for="remember_me"></label>
-          <label for="remember_me">Remember me on this computer</label>
-        </p>
-
-        <p class="text-right">
-          <button name="commit">Log in</button>
-          <a class="spacer-left" href="/">Cancel</a>, or
-          <a href="/sessions/oauth2" class="action">Login with Google</a>
-        </p>
-      </form>
-        <script>
+<div class="page-wrapper page-wrapper-simple" id="bd">
+  <div class="page-simple" id="nonav">
+      <div id="content">
+          <h1 class="maintenance-title text-center">Log In to
+          SonarQube</h1>
+          <form action="/sessions/login" id="login_form" method="post"
+          name="login_form">
+              <input name="return_to_anchor" type="hidden" value="">
+              <div class="big-spacer-bottom">
+                  <label class="login-label" for="login">Login</label>
+                  <input autocomplete="off" class="login-input" id=
+                  "login" maxlength="255" name="login" placeholder=
+                  "Login" required="" style=
+                  "background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAALZJREFUOBFjYKAANDQ0rGWiQD9IqzgL0BQ3IKMXiB8AcSKQ/waIrYDsKUD8Fir2pKmpSf/fv3+zgPxfzMzMSbW1tbeBbAaQC+b+//9fB4h9gOwikCAQTAPyDYHYBciuBQkANfcB+WZAbPP37992kBgIUOoFBiZGRsYkIL4ExJvZ2NhAXmFgYmLKBPLPAfFuFhaWJpAYEBQC+SeA+BDQC5UQIQpJYFgdodQLLyh0w6j20RCgUggAAEREPpKMfaEsAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: 98% 50%;"
+                  type="text">
+              </div>
+              <p class="big-spacer-bottom"><label class="login-label"
+              for="password">Password</label> <input autocomplete="off"
+              class="login-input" id="password" name="password"
+              placeholder="Password" required="" style=
+              "background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAALZJREFUOBFjYKAANDQ0rGWiQD9IqzgL0BQ3IKMXiB8AcSKQ/waIrYDsKUD8Fir2pKmpSf/fv3+zgPxfzMzMSbW1tbeBbAaQC+b+//9fB4h9gOwikCAQTAPyDYHYBciuBQkANfcB+WZAbPP37992kBgIUOoFBiZGRsYkIL4ExJvZ2NhAXmFgYmLKBPLPAfFuFhaWJpAYEBQC+SeA+BDQC5UQIQpJYFgdodQLLyh0w6j20RCgUggAAEREPpKMfaEsAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-position: 98% 50%;"
+              type="password"></p>
+              <p class="big-spacer-bottom"><input checked class=
+              "login-remember-me" id="remember_me" name="remember_me"
+              type="checkbox" value="1"> <label for=
+              "remember_me"></label> <label for="remember_me">Remember me
+              on this computer</label></p>
+              <div>
+                  <div class="text-right overflow-hidden">
+                    <button name="commit">Log in</button>
+                    <a class="spacer-left" href="/">Cancel</a>, or
+                    <a href="/sessions/oauth2" class="action">Login with Google</a>
+                  </div>
+              </div>
+          </form>
+          <script>
           (function ($) {
-            $('#login').focus();
-            var returnToAnchor = $('[name="return_to_anchor"]');
-            if (!returnToAnchor.val()) {
-              returnToAnchor.val(window.location.hash);
-            }
+          $('#login').focus();
+          var returnToAnchor = $('[name="return_to_anchor"]');
+          if (!returnToAnchor.val()) {
+          returnToAnchor.val(window.location.hash);
+          }
           })(window.jQuery);
-        </script>
+          </script>
       </div>
-    </div>
   </div>
 </div>

@@ -34,7 +34,7 @@ import java.util.Collections;
 
 public class GoogleProvider extends GenericProvider {
     private static final Logger LOG = LoggerFactory.getLogger(GoogleProvider.class);
-    public static final String PROPERTY_GOOGLE_HD = "sonar.oauth2.google.hd";
+    public static final String PROPERTY_GOOGLE_HD = "sonar.auth.google.hd";
 
     private static final String SCOPE = "openid profile email";
 
@@ -57,7 +57,6 @@ public class GoogleProvider extends GenericProvider {
     @Override
     public GenericProfile validateTokenAndGetUser(Settings settings, OAuthJSONAccessTokenResponse tokenResponse) {
         try {
-            //TODO: use general method to validate Oauth2 token (instead of using 1 library per provider)
             HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)

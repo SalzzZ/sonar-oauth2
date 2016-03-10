@@ -16,7 +16,6 @@
 package org.salvian.sonar.plugins.oauth2;
 
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
-import org.salvian.sonar.plugins.oauth2.provider.GoogleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.web.ServletFilter;
@@ -31,7 +30,7 @@ import java.io.IOException;
  * @author <a href="https://github.com/InfoSec812">Deven Phillips</a>
  */
 public class OAuth2AuthenticationFilter extends ServletFilter {
-    private final static Logger LOG = LoggerFactory.getLogger(OAuth2AuthenticationFilter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OAuth2AuthenticationFilter.class);
     public static final String USER_ATTRIBUTE = "sonar.oauth.profile";
 
     final private OAuth2Client client;

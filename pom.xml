@@ -6,9 +6,9 @@
     <groupId>org.salvian</groupId>
     <artifactId>oauth2</artifactId>
     <packaging>sonar-plugin</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2</version>
 
-    <name>Sonar Oauth2 Plugin</name>
+    <name>SonarQube Oauth2 Plugin</name>
     <description>
         An authentication provider plugin for SonarQube which allows for integration with OAuth2 providers (i.e.
         Google/Facebook/GitHub)
@@ -16,21 +16,15 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.buildVersion>5.1</sonar.buildVersion>
+        <sonar.buildVersion>5.3</sonar.buildVersion>
         <jdk.min.version>1.7</jdk.min.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.codehaus.sonar</groupId>
+            <groupId>org.sonarsource.sonarqube</groupId>
             <artifactId>sonar-plugin-api</artifactId>
             <version>${sonar.buildVersion}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.12</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -47,12 +41,12 @@
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>1.20.0</version>
+            <version>1.21.0</version>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
+            <version>1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
